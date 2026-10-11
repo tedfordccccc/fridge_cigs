@@ -1,0 +1,283 @@
+<title>Fridge Cig Report</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Federo&display=swap">
+<style>
+/* Layout: soda-fountain menu card. Cream paper in every theme, red enamel sign header; leaderboard left, pour form right; stacks on phones */
+:root{
+  --bg:#f3e8d0; --surface:#fbf5e6; --sunk:#efe2c6; --fg:#2b1d14; --muted:#7a6550; --line:#d9c6a0;
+  --red:#c8102e; --red-ink:#9e0b22; --red-soft:#f2d5cc; --on-red:#fbf5e6;
+  --script:"Pinyon Script","Snell Roundhand","Apple Chancery",cursive;
+  --display:"Federo","Optima","Candara",system-ui,sans-serif;
+  --body:"Federo","Optima","Candara",system-ui,sans-serif;
+  --mono:"Federo","Optima","Candara",system-ui,sans-serif;
+  color-scheme:light;
+}
+body{background-image:radial-gradient(rgba(122,101,80,.07) 1px,transparent 1px);background-size:4px 4px}
+h2,.rank,.empty b,.total .tier{font-weight:400!important}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:16px;padding-block:20px 48px}
+header.can{background:var(--red);border-radius:16px;padding:8px;color:var(--on-red);box-shadow:0 3px 0 var(--red-ink)}
+.sign{border:2px solid var(--on-red);border-radius:10px;padding:16px 20px 20px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--red-ink)}
+header .eyebrow{color:var(--on-red);opacity:.85;text-align:center;border-bottom:1px solid currentColor;padding-bottom:8px;margin-bottom:10px}
+.kicker{font-family:var(--display);font-size:clamp(16px,2.6vw,22px);letter-spacing:.22em;text-transform:uppercase}
+h1{font-family:var(--script);font-weight:400;font-size:clamp(64px,13vw,124px);line-height:1;margin:-4px 0 10px;letter-spacing:-.01em;text-wrap:balance;text-shadow:2px 3px 0 var(--red-ink)}
+.wordmark{display:block;width:min(100%,760px);height:auto;overflow:visible;margin:6px 0 4px}
+.pr-face{fill:var(--on-red);stroke:var(--on-red);stroke-width:3;stroke-linejoin:round}
+.pr-shadow{fill:var(--red-ink);stroke:var(--red-ink);stroke-width:3;stroke-linejoin:round}
+.sub{color:var(--on-red);opacity:.9;max-width:60ch;margin:0}
+.btn.cream{background:var(--on-red);color:var(--red-ink);border:2px solid var(--on-red)}
+.btn.cream:hover{background:transparent;color:var(--on-red)}
+.hdr-row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:space-between}
+.btn{font:600 14px var(--body);border:0;border-radius:999px;padding:10px 18px;background:var(--red);color:var(--on-red);cursor:pointer}
+.btn:hover{background:var(--red-ink)}
+.btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.btn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,.row:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.note{margin-top:14px;font-size:13px;color:var(--muted);background:var(--sunk);border:1px dashed var(--line);border-radius:10px;padding:8px 12px}
+.grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:20px;margin-top:20px;align-items:start}
+@media (max-width:820px){.grid{grid-template-columns:1fr}}
+section{min-width:0}
+h2{font-family:var(--display);font-weight:700;font-size:28px;text-transform:uppercase;letter-spacing:.02em;margin:0 0 10px;display:flex;align-items:baseline;gap:10px}
+h2 small{font:500 12px var(--mono);color:var(--muted);letter-spacing:.06em}
+.board{display:flex;flex-direction:column;gap:8px}
+.row{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:12px;align-items:center;cursor:pointer;text-align:left;width:100%;font:inherit;color:inherit}
+.row:hover{border-color:var(--muted)}
+.rank{font-family:var(--display);font-weight:900;font-size:28px;color:var(--muted);text-align:center;font-variant-numeric:tabular-nums}
+.row.top .rank{color:var(--red)}
+.pname{font-weight:700;font-size:16px;overflow-wrap:anywhere}
+.meta{font-size:12.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:2px}
+.bar{height:5px;background:var(--sunk);border-radius:3px;margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--red);border-radius:3px}
+.score{font-family:var(--mono);font-weight:700;font-size:22px;font-variant-numeric:tabular-nums;text-align:right}
+.score small{display:block;font:600 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.pours{grid-column:1/-1;border-top:1px solid var(--line);margin-top:4px;padding-top:8px;display:flex;flex-direction:column;gap:8px;cursor:default}
+.pour{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;font-size:13.5px}
+.pour .sub4{font-family:var(--mono);font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.pour p{margin:2px 0 0;grid-column:1/-1;color:var(--fg);overflow-wrap:anywhere}
+.pour .act{display:flex;gap:8px;align-items:center}
+.linkbtn{background:none;border:0;padding:0;font:600 12px var(--body);color:var(--red-ink);cursor:pointer}
+.chip{font:600 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:999px;background:var(--red-soft);color:var(--red-ink)}
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:28px 20px;text-align:left}
+.empty b{font-family:var(--display);font-size:24px;text-transform:uppercase;display:block;margin-bottom:4px}
+.empty p{margin:0;color:var(--muted);max-width:52ch}
+form{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:14px}
+label{display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+input[type=text],input[type=date],select,textarea{font:500 15px var(--body);color:var(--fg);background:var(--sunk);border:1px solid var(--line);border-radius:8px;padding:9px 10px;width:100%;text-transform:none;letter-spacing:0}
+textarea{min-height:64px;resize:vertical}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.crit{display:flex;flex-direction:column;gap:2px}
+.crit .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.crit .top span{font-size:14px;font-weight:700;color:var(--fg);text-transform:none;letter-spacing:0}
+.crit .top em{font:normal 600 11px var(--mono);color:var(--muted);letter-spacing:.04em}
+.crit .hint{font-size:12px;font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0}
+.crit output{font:700 16px var(--mono);color:var(--red-ink);min-width:2ch;text-align:right;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--red)}
+.total{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--sunk);border-radius:10px;padding:10px 12px}
+.total .big{font:700 30px var(--mono);font-variant-numeric:tabular-nums}
+.total .tier{font-family:var(--display);font-size:20px;font-weight:700;text-transform:uppercase;color:var(--red-ink)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:999px;font-weight:600;font-size:14px}
+.err{color:var(--red-ink);font-size:13px;margin:0}
+@media (prefers-reduced-motion:no-preference){.bar i{transition:width .5s ease}}
+
+/* Type system (Federo has a single weight; no faux bold): Spencerian script for the wordmark, section heads and place names; vintage sign block letters for everything else */
+*{font-synthesis:none}
+body{font-size:16px;line-height:1.45}
+.pname,.total .tier{font-family:var(--script);text-transform:none;letter-spacing:0;font-weight:400}
+h2{font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:0.05em;font-size:30px;line-height:1.1;color:var(--red-ink)} h2 small{font-family:var(--body);font-size:13px;letter-spacing:0.034em;text-transform:uppercase}
+.pname{font-size:26px;line-height:1.15} .total .tier{font-size:26px} .empty b{font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:0.05em;font-size:26px;color:var(--red-ink)}
+.kicker,.eyebrow,label,.chip,.btn,.score small,.rank,.crit .top span,.linkbtn{font-family:var(--display);text-transform:uppercase;letter-spacing:0.042em;font-weight:700}
+.kicker{font-size:clamp(20px,3.4vw,28px);letter-spacing:0.101em;font-weight:800}
+.eyebrow{font-size:13px;letter-spacing:0.076em}
+label{font-size:13px}
+.crit .top span{font-size:15px;letter-spacing:0.034em}
+.rank{font-size:34px;font-weight:800;letter-spacing:0}
+.btn{font-size:15px;letter-spacing:0.059em}
+.score,.total .big,.crit output{font-family:var(--display);font-weight:800;letter-spacing:0.008em}
+.score{font-size:30px} .total .big{font-size:38px} .crit output{font-size:20px}
+input[type=text],input[type=date],select,textarea{font-family:var(--body);font-size:16px}
+.pour .sub4{font-size:13px;letter-spacing:0.017em}
+body{word-spacing:0.18em;letter-spacing:-0.01em}
+.pname,.total .tier,h1{word-spacing:normal;letter-spacing:0}
+.kicker,.eyebrow,label,.chip,.btn,.score small,.rank,.crit .top span,.crit .top em,.linkbtn,h2,h2 small,.empty b,.score,.total .big,.crit output,.pour .sub4,input,select,textarea{letter-spacing:-0.03em!important}
+.legal{margin-top:32px;padding-top:14px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);max-width:70ch}
+/* Form fields: equal height; stop native date pickers from forcing extra width/height (iOS) */
+.two>label{min-width:0}
+input[type=text],input[type=date],select{height:42px;min-width:0;max-width:100%;display:block;line-height:1.2}
+input[type=date]{-webkit-appearance:none;appearance:none;padding-block:0}
+input[type=date]::-webkit-date-and-time-value{text-align:left;margin:0}
+</style>
+
+<div class="wrap">
+  <header class="can"><div class="sign">
+    <div class="eyebrow">Soda fountain field notes · fountain, can &amp; bottle</div>
+    <div class="hdr-row">
+      <div>
+        <div class="kicker">A Diet Coke rating guide</div>
+        <h1><svg class="wordmark" viewBox="-20 -799 7328 1207" role="img" aria-label="Fridge Cig Report" xmlns="http://www.w3.org/2000/svg"><defs><path id="pr-glyphs" transform="scale(0.48828)" d="M679 -814Q603 -814 557.5 -849.5Q512 -885 512 -951Q512 -1035 577.5 -1119.5Q643 -1204 763.0 -1273.5Q883 -1343 1045 -1382Q1133 -1402 1224.0 -1408.0Q1315 -1414 1406 -1414Q1514 -1414 1625.0 -1396.5Q1736 -1379 1839 -1379Q1982 -1379 2071.0 -1429.0Q2160 -1479 2206 -1557Q2214 -1569 2219.0 -1571.5Q2224 -1574 2228 -1574Q2237 -1574 2237 -1567Q2237 -1563 2236.0 -1559.0Q2235 -1555 2228 -1547Q2154 -1429 2028.5 -1359.5Q1903 -1290 1714 -1290Q1576 -1290 1436.5 -1313.5Q1297 -1337 1160 -1337Q1046 -1337 935.5 -1303.5Q825 -1270 736.0 -1215.0Q647 -1160 594.0 -1093.5Q541 -1027 541 -961Q541 -912 566.5 -882.0Q592 -852 647 -852Q717 -852 791.5 -888.0Q866 -924 931.0 -980.0Q996 -1036 1039.0 -1097.5Q1082 -1159 1088 -1210Q1093 -1231 1097 -1231Q1107 -1231 1107 -1210Q1107 -1135 1068.5 -1064.5Q1030 -994 966.5 -937.5Q903 -881 828.0 -847.5Q753 -814 679 -814ZM232 1Q174 1 121.0 -19.0Q68 -39 34.0 -72.0Q0 -105 0 -145Q0 -189 31.0 -208.5Q62 -228 93 -228Q110 -228 127.0 -217.0Q144 -206 144 -182Q144 -163 127.0 -147.5Q110 -132 87 -132Q74 -132 62.0 -134.0Q50 -136 40 -142V-137Q40 -88 98.5 -57.0Q157 -26 240 -26Q307 -26 380.0 -49.0Q453 -72 536.5 -135.0Q620 -198 716.5 -317.0Q813 -436 927 -628Q927 -629 932 -636Q691 -582 557.5 -503.5Q424 -425 379 -348Q368 -328 360 -328Q353 -328 353 -336Q353 -344 360 -353Q386 -413 468.5 -475.5Q551 -538 675.5 -591.5Q800 -645 952 -676Q955 -676 957 -677Q1079 -867 1213.0 -986.5Q1347 -1106 1464.0 -1162.5Q1581 -1219 1650 -1219Q1673 -1219 1673 -1210Q1673 -1206 1665.0 -1204.0Q1657 -1202 1631 -1194Q1514 -1160 1377.0 -1033.5Q1240 -907 1114 -715Q1176 -731 1232.0 -747.0Q1288 -763 1325 -776Q1334 -782 1343.0 -791.0Q1352 -800 1359 -816Q1371 -816 1403.0 -814.0Q1435 -812 1467.0 -808.5Q1499 -805 1511 -801Q1465 -780 1414.0 -736.0Q1363 -692 1319.0 -634.5Q1275 -577 1250 -513Q1241 -497 1233 -497Q1221 -497 1221 -511Q1221 -517 1229 -541Q1252 -601 1271.5 -643.5Q1291 -686 1316 -724Q1276 -711 1213.5 -697.0Q1151 -683 1085 -669L1081 -662Q925 -408 788.5 -263.0Q652 -118 517.5 -58.5Q383 1 232 1Z M1685 2Q1629 2 1594.0 -26.5Q1559 -55 1559 -101Q1559 -181 1676.0 -294.0Q1793 -407 1993 -541Q1891 -558 1817.5 -575.0Q1744 -592 1700 -612Q1680 -572 1642.0 -514.0Q1604 -456 1545 -389Q1505 -342 1485.0 -323.0Q1465 -304 1457.5 -300.5Q1450 -297 1449 -295Q1446 -294 1445.5 -301.0Q1445 -308 1446 -312Q1446 -316 1461.0 -331.0Q1476 -346 1524 -406Q1574 -469 1613.0 -526.0Q1652 -583 1673 -626Q1637 -649 1631 -677Q1623 -725 1650.0 -764.0Q1677 -803 1720 -803Q1773 -803 1773 -757Q1773 -734 1764.0 -718.0Q1755 -702 1746 -687Q1728 -666 1728 -634Q1728 -624 1762.5 -612.5Q1797 -601 1847.5 -590.5Q1898 -580 1947.0 -572.5Q1996 -565 2024 -563Q2043 -562 2047.5 -556.5Q2052 -551 2052 -548Q2052 -538 2023 -515Q1968 -473 1910.0 -413.5Q1852 -354 1802.0 -290.5Q1752 -227 1721.0 -171.0Q1690 -115 1690 -79Q1690 -32 1728 -32Q1777 -32 1835.0 -65.0Q1893 -98 1952.5 -148.0Q2012 -198 2064.5 -251.5Q2117 -305 2155.0 -347.5Q2193 -390 2208 -406L2228 -389Q2206 -368 2165.5 -322.5Q2125 -277 2071.0 -221.5Q2017 -166 1953.5 -115.0Q1890 -64 1822.0 -31.0Q1754 2 1685 2Z M2702 -876Q2674 -876 2657.5 -893.5Q2641 -911 2641 -938Q2641 -973 2670.5 -1002.5Q2700 -1032 2741 -1032Q2769 -1032 2785.5 -1013.5Q2802 -995 2802 -969Q2802 -932 2770.5 -904.0Q2739 -876 2702 -876ZM2191 2Q2130 2 2092.5 -20.5Q2055 -43 2055 -81Q2055 -111 2070.0 -150.5Q2085 -190 2127.5 -254.0Q2170 -318 2251.5 -420.5Q2333 -523 2466 -678Q2475 -677 2509.0 -676.0Q2543 -675 2562 -675Q2579 -675 2587.5 -675.5Q2596 -676 2604 -677Q2458 -505 2365.5 -394.0Q2273 -283 2223.0 -217.0Q2173 -151 2154.0 -116.0Q2135 -81 2135 -60Q2135 -34 2163.0 -30.0Q2191 -26 2208 -26Q2262 -26 2326.0 -62.5Q2390 -99 2453.5 -153.5Q2517 -208 2571.5 -264.0Q2626 -320 2661.0 -360.5Q2696 -401 2702 -407L2722 -389Q2711 -377 2674.0 -334.0Q2637 -291 2582.0 -234.5Q2527 -178 2461.5 -124.0Q2396 -70 2326.5 -34.0Q2257 2 2191 2Z M2757 2Q2694 2 2662.0 -33.0Q2630 -68 2630 -129Q2630 -196 2659.5 -272.0Q2689 -348 2755 -423Q2890 -580 3011.0 -632.5Q3132 -685 3230 -685Q3271 -685 3311.5 -664.5Q3352 -644 3352 -603Q3352 -599 3351.5 -595.0Q3351 -591 3351 -586Q3431 -702 3540.0 -859.5Q3649 -1017 3780.5 -1204.0Q3912 -1391 4057 -1595Q4071 -1589 4093.0 -1584.0Q4115 -1579 4141 -1579Q4159 -1579 4184 -1582L3234 -250Q3176 -173 3146.5 -127.0Q3117 -81 3117 -55Q3117 -28 3142 -28Q3208 -28 3275.0 -62.5Q3342 -97 3403.0 -149.5Q3464 -202 3514.5 -257.0Q3565 -312 3599.0 -353.5Q3633 -395 3644 -406L3666 -389Q3653 -376 3616.5 -333.0Q3580 -290 3525.5 -233.5Q3471 -177 3405.5 -123.0Q3340 -69 3268.5 -33.5Q3197 2 3126 2Q3077 2 3056.0 -17.0Q3035 -36 3035 -66Q3036 -126 3155 -268L3147 -272Q3011 -121 2914.5 -59.5Q2818 2 2757 2ZM2764 -28Q2804 -28 2862.0 -59.0Q2920 -90 3012 -173Q3051 -210 3094.0 -253.0Q3137 -296 3183 -351Q3197 -368 3226.5 -409.5Q3256 -451 3299 -513Q3322 -561 3322 -594Q3322 -625 3298.0 -639.5Q3274 -654 3246 -654Q3197 -654 3092.5 -582.5Q2988 -511 2857 -356Q2782 -265 2748.0 -196.5Q2714 -128 2714 -80Q2714 -28 2764 -28Z M3102 787Q3060 787 3031.5 765.0Q3003 743 3003 720Q3002 678 3033.5 630.5Q3065 583 3144.0 525.0Q3223 467 3361.5 395.0Q3500 323 3712 233Q3794 133 3893.5 9.0Q3993 -115 4115 -268L4107 -272Q3976 -123 3872.0 -60.5Q3768 2 3705 2Q3642 2 3612.0 -33.0Q3582 -68 3580 -129Q3580 -196 3607.5 -272.0Q3635 -348 3699 -423Q3785 -528 3868.5 -584.5Q3952 -641 4028.0 -663.0Q4104 -685 4167 -685Q4232 -685 4271.0 -663.0Q4310 -641 4311 -603Q4311 -574 4299 -544Q4330 -582 4352.0 -610.0Q4374 -638 4393 -665Q4404 -662 4421.5 -659.5Q4439 -657 4456 -657Q4469 -657 4493.0 -658.0Q4517 -659 4530 -661L4208 -246Q4115 -125 4034.5 -22.0Q3954 81 3885 168Q4094 61 4271.0 -77.5Q4448 -216 4606 -406L4626 -389Q4451 -180 4261.0 -36.5Q4071 107 3847 214Q3698 398 3592.5 511.5Q3487 625 3406.5 684.5Q3326 744 3254.5 765.5Q3183 787 3102 787ZM3712 -28Q3768 -28 3878.0 -99.5Q3988 -171 4142 -351L4220 -446Q4244 -481 4263.5 -521.0Q4283 -561 4283 -594Q4282 -654 4193 -654Q4146 -654 4037.0 -582.5Q3928 -511 3804 -356Q3731 -265 3696.5 -196.5Q3662 -128 3663 -80Q3666 -28 3712 -28ZM3105 760Q3156 760 3206.5 739.5Q3257 719 3319.5 666.5Q3382 614 3468.0 519.0Q3554 424 3677 276Q3442 378 3301.5 456.5Q3161 535 3098.5 598.5Q3036 662 3036 720Q3036 731 3055.0 745.5Q3074 760 3105 760Z M4718 6Q4620 6 4578.0 -45.0Q4536 -96 4534 -170Q4533 -224 4556.0 -290.0Q4579 -356 4604 -391Q4678 -494 4764.0 -559.0Q4850 -624 4932.5 -654.5Q5015 -685 5078 -685Q5139 -685 5163.5 -665.0Q5188 -645 5189 -619Q5192 -580 5147.5 -528.5Q5103 -477 4992.0 -417.0Q4881 -357 4682 -291Q4647 -235 4635.0 -194.5Q4623 -154 4623 -122Q4623 -75 4654.5 -49.0Q4686 -23 4729 -23Q4823 -23 4905.5 -58.5Q4988 -94 5056.5 -148.0Q5125 -202 5177.0 -257.5Q5229 -313 5262.0 -354.5Q5295 -396 5306 -406L5327 -389Q5312 -376 5276.5 -332.0Q5241 -288 5186.5 -231.0Q5132 -174 5061.0 -120.0Q4990 -66 4903.5 -30.0Q4817 6 4718 6ZM4705 -326Q4899 -394 5011.0 -466.5Q5123 -539 5123 -605Q5123 -661 5071 -661Q5004 -661 4926.0 -589.0Q4848 -517 4744 -380Q4722 -352 4705 -326Z M6388 262Q6370 262 6340.0 187.0Q6310 112 6305 -1Q6214 -14 6153.0 -76.5Q6092 -139 6092 -251Q6092 -373 6150.0 -503.5Q6208 -634 6305 -759Q6190 -785 6133.5 -856.5Q6077 -928 6077 -1020Q6077 -1095 6133.0 -1173.0Q6189 -1251 6286.5 -1318.0Q6384 -1385 6508.5 -1426.0Q6633 -1467 6770 -1467Q6803 -1467 6827.0 -1462.5Q6851 -1458 6851 -1450Q6851 -1442 6838 -1442Q6827 -1442 6808.5 -1444.0Q6790 -1446 6765 -1446Q6665 -1446 6553.0 -1408.0Q6441 -1370 6342.5 -1304.5Q6244 -1239 6182.0 -1155.0Q6120 -1071 6120 -979Q6120 -915 6172.5 -859.5Q6225 -804 6323 -782Q6425 -908 6556.0 -1020.0Q6687 -1132 6832.0 -1217.5Q6977 -1303 7121.0 -1352.0Q7265 -1401 7393 -1401Q7436 -1401 7464.5 -1384.5Q7493 -1368 7493 -1327Q7493 -1259 7429.0 -1182.0Q7365 -1105 7257.0 -1031.0Q7149 -957 7015.0 -895.0Q6881 -833 6739.0 -793.5Q6597 -754 6468 -748Q6334 -601 6246.5 -459.0Q6159 -317 6159 -213Q6159 -134 6198.5 -88.5Q6238 -43 6305 -29Q6305 -166 6355.5 -292.5Q6406 -419 6491.0 -518.5Q6576 -618 6681.5 -675.5Q6787 -733 6898 -733Q6982 -733 7026.5 -694.5Q7071 -656 7071 -593Q7071 -507 7016.0 -404.5Q6961 -302 6862.5 -209.5Q6764 -117 6633.5 -57.5Q6503 2 6352 2Q6340 2 6334 1Q6336 55 6348.5 128.5Q6361 202 6393 244Q6397 249 6397.0 252.0Q6397 255 6397 257Q6397 262 6388 262ZM6493 -775Q6603 -786 6734.0 -830.0Q6865 -874 6994.5 -937.0Q7124 -1000 7231.5 -1071.0Q7339 -1142 7404.0 -1208.5Q7469 -1275 7469 -1324Q7469 -1353 7447.5 -1365.0Q7426 -1377 7391 -1377Q7317 -1377 7209.0 -1327.5Q7101 -1278 6977.0 -1192.5Q6853 -1107 6728.0 -999.5Q6603 -892 6493 -775ZM6363 -24Q6444 -24 6530.0 -68.0Q6616 -112 6696.0 -182.5Q6776 -253 6840.0 -334.5Q6904 -416 6941.5 -494.0Q6979 -572 6979 -628Q6979 -706 6887 -706Q6802 -706 6706.0 -653.5Q6610 -601 6525.5 -508.0Q6441 -415 6387.5 -291.5Q6334 -168 6334 -26V-25Q6341 -24 6348.5 -24.0Q6356 -24 6363 -24Z M7670 -876Q7642 -876 7625.5 -893.5Q7609 -911 7609 -938Q7609 -973 7638.5 -1002.5Q7668 -1032 7709 -1032Q7737 -1032 7753.5 -1013.5Q7770 -995 7770 -969Q7770 -932 7738.5 -904.0Q7707 -876 7670 -876ZM7159 2Q7098 2 7060.5 -20.5Q7023 -43 7023 -81Q7023 -111 7038.0 -150.5Q7053 -190 7095.5 -254.0Q7138 -318 7219.5 -420.5Q7301 -523 7434 -678Q7443 -677 7477.0 -676.0Q7511 -675 7530 -675Q7547 -675 7555.5 -675.5Q7564 -676 7572 -677Q7426 -505 7333.5 -394.0Q7241 -283 7191.0 -217.0Q7141 -151 7122.0 -116.0Q7103 -81 7103 -60Q7103 -34 7131.0 -30.0Q7159 -26 7176 -26Q7230 -26 7294.0 -62.5Q7358 -99 7421.5 -153.5Q7485 -208 7539.5 -264.0Q7594 -320 7629.0 -360.5Q7664 -401 7670 -407L7690 -389Q7679 -377 7642.0 -334.0Q7605 -291 7550.0 -234.5Q7495 -178 7429.5 -124.0Q7364 -70 7294.5 -34.0Q7225 2 7159 2Z M7126 787Q7084 787 7055.5 765.0Q7027 743 7027 720Q7026 678 7057.5 630.5Q7089 583 7168.0 525.0Q7247 467 7385.5 395.0Q7524 323 7736 233Q7818 133 7917.5 9.0Q8017 -115 8139 -268L8131 -272Q8000 -123 7896.0 -60.5Q7792 2 7729 2Q7666 2 7636.0 -33.0Q7606 -68 7604 -129Q7604 -196 7631.5 -272.0Q7659 -348 7723 -423Q7809 -528 7892.5 -584.5Q7976 -641 8052.0 -663.0Q8128 -685 8191 -685Q8256 -685 8295.0 -663.0Q8334 -641 8335 -603Q8335 -574 8323 -544Q8354 -582 8376.0 -610.0Q8398 -638 8417 -665Q8428 -662 8445.5 -659.5Q8463 -657 8480 -657Q8493 -657 8517.0 -658.0Q8541 -659 8554 -661L8232 -246Q8139 -125 8058.5 -22.0Q7978 81 7909 168Q8118 61 8295.0 -77.5Q8472 -216 8630 -406L8650 -389Q8475 -180 8285.0 -36.5Q8095 107 7871 214Q7722 398 7616.5 511.5Q7511 625 7430.5 684.5Q7350 744 7278.5 765.5Q7207 787 7126 787ZM7736 -28Q7792 -28 7902.0 -99.5Q8012 -171 8166 -351L8244 -446Q8268 -481 8287.5 -521.0Q8307 -561 8307 -594Q8306 -654 8217 -654Q8170 -654 8061.0 -582.5Q7952 -511 7828 -356Q7755 -265 7720.5 -196.5Q7686 -128 7687 -80Q7690 -28 7736 -28ZM7129 760Q7180 760 7230.5 739.5Q7281 719 7343.5 666.5Q7406 614 7492.0 519.0Q7578 424 7701 276Q7466 378 7325.5 456.5Q7185 535 7122.5 598.5Q7060 662 7060 720Q7060 731 7079.0 745.5Q7098 760 7129 760Z M9352 2Q9243 2 9191.5 -38.0Q9140 -78 9140 -135Q9140 -179 9171.0 -198.5Q9202 -218 9233 -218Q9250 -218 9266.5 -207.0Q9283 -196 9283 -172Q9283 -153 9266.5 -137.5Q9250 -122 9228 -122Q9215 -122 9202.5 -124.0Q9190 -126 9180 -133V-127Q9180 -83 9222.5 -54.5Q9265 -26 9339 -26Q9405 -26 9465.0 -49.0Q9525 -72 9596.5 -136.5Q9668 -201 9768.0 -324.0Q9868 -447 10014 -648Q10174 -872 10335.0 -1015.0Q10496 -1158 10665 -1270Q10675 -1276 10684.5 -1281.5Q10694 -1287 10704 -1292Q10643 -1333 10551.5 -1353.0Q10460 -1373 10347 -1373Q10173 -1373 10017.0 -1317.0Q9861 -1261 9742.0 -1172.0Q9623 -1083 9556.5 -980.5Q9490 -878 9493 -784Q9495 -730 9520.5 -698.0Q9546 -666 9581.5 -652.0Q9617 -638 9649 -638Q9721 -638 9794.0 -682.5Q9867 -727 9933.5 -796.5Q10000 -866 10053.0 -944.5Q10106 -1023 10139.0 -1092.0Q10172 -1161 10176 -1203Q10180 -1237 10191 -1237Q10201 -1237 10201 -1205Q10204 -1117 10167.0 -1014.5Q10130 -912 10057.5 -820.0Q9985 -728 9881.0 -670.0Q9777 -612 9647 -612Q9582 -612 9521.5 -657.5Q9461 -703 9459 -779Q9456 -878 9508.0 -970.5Q9560 -1063 9652.0 -1141.0Q9744 -1219 9861.5 -1277.5Q9979 -1336 10108.0 -1368.5Q10237 -1401 10362 -1401Q10592 -1401 10735 -1309Q10812 -1348 10868.0 -1366.0Q10924 -1384 10952 -1384Q10971 -1384 10972 -1374Q10972 -1362 10944 -1358Q10867 -1342 10771 -1283Q10887 -1189 10893 -1042Q10897 -958 10847.0 -875.5Q10797 -793 10703.5 -726.5Q10610 -660 10483 -622Q10512 -592 10513 -544Q10516 -499 10503.0 -453.5Q10490 -408 10446.0 -347.5Q10402 -287 10312 -197Q10278 -168 10266.0 -143.5Q10254 -119 10255 -99Q10255 -69 10277.0 -47.5Q10299 -26 10360 -26Q10440 -26 10527.5 -85.0Q10615 -144 10691.0 -247.0Q10767 -350 10811 -480Q10819 -510 10825 -510Q10843 -510 10843 -481Q10844 -394 10796.0 -308.5Q10748 -223 10672.0 -153.0Q10596 -83 10511.5 -40.5Q10427 2 10355 2Q10274 2 10230.0 -32.5Q10186 -67 10184 -121Q10182 -195 10208.0 -254.0Q10234 -313 10275.0 -362.0Q10316 -411 10357 -453Q10410 -497 10425.0 -526.0Q10440 -555 10439 -583Q10439 -597 10433 -609Q10408 -603 10385.0 -600.5Q10362 -598 10342 -598Q10299 -598 10277.0 -609.5Q10255 -621 10254 -636Q10253 -648 10272.5 -659.5Q10292 -671 10330 -671Q10363 -671 10394.5 -665.5Q10426 -660 10451 -646Q10520 -675 10584.0 -730.0Q10648 -785 10698.5 -854.0Q10749 -923 10777.5 -994.0Q10806 -1065 10804 -1126Q10801 -1206 10741 -1263Q10622 -1182 10491.0 -1041.5Q10360 -901 10233 -716Q10039 -444 9879.5 -287.0Q9720 -130 9590.0 -64.0Q9460 2 9352 2ZM10337 -621Q10372 -621 10410 -632Q10382 -648 10330 -648Q10290 -648 10290 -638Q10290 -634 10302.0 -627.5Q10314 -621 10337 -621Z M11081 6Q10983 6 10941.0 -45.0Q10899 -96 10897 -170Q10896 -224 10919.0 -290.0Q10942 -356 10967 -391Q11041 -494 11127.0 -559.0Q11213 -624 11295.5 -654.5Q11378 -685 11441 -685Q11502 -685 11526.5 -665.0Q11551 -645 11552 -619Q11555 -580 11510.5 -528.5Q11466 -477 11355.0 -417.0Q11244 -357 11045 -291Q11010 -235 10998.0 -194.5Q10986 -154 10986 -122Q10986 -75 11017.5 -49.0Q11049 -23 11092 -23Q11186 -23 11268.5 -58.5Q11351 -94 11419.5 -148.0Q11488 -202 11540.0 -257.5Q11592 -313 11625.0 -354.5Q11658 -396 11669 -406L11690 -389Q11675 -376 11639.5 -332.0Q11604 -288 11549.5 -231.0Q11495 -174 11424.0 -120.0Q11353 -66 11266.5 -30.0Q11180 6 11081 6ZM11068 -326Q11262 -394 11374.0 -466.5Q11486 -539 11486 -605Q11486 -661 11434 -661Q11367 -661 11289.0 -589.0Q11211 -517 11107 -380Q11085 -352 11068 -326Z M10979 709Q10967 709 10943.5 706.5Q10920 704 10906 700Q10983 596 11080.0 465.0Q11177 334 11280.5 192.0Q11384 50 11482.5 -86.5Q11581 -223 11659 -337Q11717 -417 11756.0 -470.0Q11795 -523 11828.5 -567.0Q11862 -611 11900.5 -662.0Q11939 -713 11994.5 -787.5Q12050 -862 12135 -977Q12171 -973 12192.5 -972.0Q12214 -971 12229 -971Q12243 -971 12257.5 -972.5Q12272 -974 12286 -978Q12198 -871 12138.0 -798.5Q12078 -726 12037.0 -675.5Q11996 -625 11964.0 -584.0Q11932 -543 11900.5 -501.0Q11869 -459 11828.0 -403.5Q11787 -348 11726 -266L11733 -258Q12044 -557 12192 -634Q12239 -658 12275.5 -671.5Q12312 -685 12373 -685Q12423 -685 12445.5 -662.0Q12468 -639 12468 -602Q12468 -526 12401.5 -436.0Q12335 -346 12167 -227Q12067 -156 12037.0 -124.5Q12007 -93 12007 -71Q12007 -26 12078 -26Q12148 -26 12221.0 -70.5Q12294 -115 12362.0 -179.5Q12430 -244 12484.5 -307.0Q12539 -370 12570 -406L12592 -389Q12562 -355 12506.5 -291.0Q12451 -227 12378.5 -159.5Q12306 -92 12227.0 -45.0Q12148 2 12072 2Q12013 2 11984.5 -24.5Q11956 -51 11956 -97Q11956 -165 12031.0 -260.0Q12106 -355 12285 -488Q12374 -552 12394.0 -581.0Q12414 -610 12414 -628Q12414 -640 12403.5 -650.0Q12393 -660 12373 -660Q12326 -660 12281.0 -644.0Q12236 -628 12184 -597Q12120 -560 12039.0 -496.0Q11958 -432 11872.0 -352.5Q11786 -273 11703.5 -187.0Q11621 -101 11552 -19Q11502 47 11440.5 137.0Q11379 227 11316.5 322.0Q11254 417 11200.5 500.0Q11147 583 11112.5 638.0Q11078 693 11073 701Q11063 704 11040.0 706.5Q11017 709 10979 709Z M12669 2Q12585 2 12545.0 -36.5Q12505 -75 12500 -131Q12497 -199 12528.5 -277.0Q12560 -355 12597 -408Q12646 -477 12716.0 -540.5Q12786 -604 12869.5 -644.5Q12953 -685 13041 -685Q13094 -685 13132.5 -657.5Q13171 -630 13175 -570Q13180 -485 13142.0 -391.5Q13104 -298 13039 -218Q13046 -189 13084 -189Q13121 -189 13165.0 -218.5Q13209 -248 13250.5 -288.0Q13292 -328 13322.0 -362.0Q13352 -396 13362 -406L13384 -389Q13365 -371 13330.0 -333.5Q13295 -296 13252.5 -256.5Q13210 -217 13165.5 -189.0Q13121 -161 13082 -161Q13034 -161 13017 -191Q12943 -107 12850.5 -52.5Q12758 2 12669 2ZM12695 -28Q12730 -28 12776.0 -48.0Q12822 -68 12868 -101Q12945 -156 13007 -230V-234Q13007 -296 13039.5 -332.5Q13072 -369 13103 -379Q13152 -481 13147 -562Q13144 -611 13121.5 -630.0Q13099 -649 13072 -649Q13014 -649 12929.5 -580.5Q12845 -512 12741 -383Q12667 -290 12637.5 -226.0Q12608 -162 12612 -115Q12612 -88 12630.5 -58.0Q12649 -28 12695 -28Z M13563 2Q13507 2 13472.0 -26.5Q13437 -55 13437 -101Q13437 -181 13554.0 -294.0Q13671 -407 13871 -541Q13769 -558 13695.5 -575.0Q13622 -592 13578 -612Q13558 -572 13520.0 -514.0Q13482 -456 13423 -389Q13383 -342 13363.0 -323.0Q13343 -304 13335.5 -300.5Q13328 -297 13327 -295Q13324 -294 13323.5 -301.0Q13323 -308 13324 -312Q13324 -316 13339.0 -331.0Q13354 -346 13402 -406Q13452 -469 13491.0 -526.0Q13530 -583 13551 -626Q13515 -649 13509 -677Q13501 -725 13528.0 -764.0Q13555 -803 13598 -803Q13651 -803 13651 -757Q13651 -734 13642.0 -718.0Q13633 -702 13624 -687Q13606 -666 13606 -634Q13606 -624 13640.5 -612.5Q13675 -601 13725.5 -590.5Q13776 -580 13825.0 -572.5Q13874 -565 13902 -563Q13921 -562 13925.5 -556.5Q13930 -551 13930 -548Q13930 -538 13901 -515Q13846 -473 13788.0 -413.5Q13730 -354 13680.0 -290.5Q13630 -227 13599.0 -171.0Q13568 -115 13568 -79Q13568 -32 13606 -32Q13655 -32 13713.0 -65.0Q13771 -98 13830.5 -148.0Q13890 -198 13942.5 -251.5Q13995 -305 14033.0 -347.5Q14071 -390 14086 -406L14106 -389Q14084 -368 14043.5 -322.5Q14003 -277 13949.0 -221.5Q13895 -166 13831.5 -115.0Q13768 -64 13700.0 -31.0Q13632 2 13563 2Z M14055 2Q14000 2 13972.5 -20.0Q13945 -42 13945 -76Q13945 -103 13952.0 -129.5Q13959 -156 13982.0 -197.0Q14005 -238 14052.0 -307.5Q14099 -377 14179 -490L14437 -853H14358Q14328 -853 14328 -866Q14328 -882 14366 -882H14457L14642 -1142Q14655 -1140 14676.5 -1138.5Q14698 -1137 14738 -1138Q14758 -1138 14781 -1142L14588 -882H14846Q14874 -882 14874 -868Q14874 -853 14849 -853H14566L14302 -497Q14208 -371 14151.0 -290.0Q14094 -209 14064.5 -162.0Q14035 -115 14024.5 -92.0Q14014 -69 14014 -58Q14014 -28 14064 -26Q14133 -27 14206.5 -71.5Q14280 -116 14348.0 -180.5Q14416 -245 14470.0 -307.5Q14524 -370 14554 -406L14576 -389Q14547 -355 14491.0 -291.0Q14435 -227 14362.5 -159.5Q14290 -92 14211.0 -45.0Q14132 2 14055 2Z"/></defs><g class="pr-shadow" transform="translate(5,7)"><use href="#pr-glyphs" x="0"/><use href="#pr-glyphs" x="3"/><use href="#pr-glyphs" x="6"/><use href="#pr-glyphs" x="9"/><use href="#pr-glyphs" x="12"/><use href="#pr-glyphs" x="15"/><use href="#pr-glyphs" x="18"/><use href="#pr-glyphs" x="21"/></g><g class="pr-face"><use href="#pr-glyphs" x="0"/><use href="#pr-glyphs" x="3"/><use href="#pr-glyphs" x="6"/><use href="#pr-glyphs" x="9"/><use href="#pr-glyphs" x="12"/><use href="#pr-glyphs" x="15"/><use href="#pr-glyphs" x="18"/><use href="#pr-glyphs" x="21"/></g></svg></h1>
+        <p class="sub">Score the Diet Coke wherever you order it. Fizz, syrup ratio, chill and ice roll up into one weighted score, and every spot lands on the leaderboard.</p>
+      </div>
+      <button class="btn cream" id="jump" type="button">Rate a pour</button>
+    </div>
+  </div></header>
+  <div class="note" id="modeNote" hidden></div>
+
+  <div class="grid">
+    <section aria-labelledby="lbh">
+      <h2 id="lbh">Leaderboard <small id="count"></small></h2>
+      <div class="board" id="board"></div>
+    </section>
+
+    <section aria-labelledby="fh">
+      <h2 id="fh">Rate a pour</h2>
+      <form id="f" novalidate>
+        <label>Establishment<input type="text" id="place" list="places" placeholder="e.g. McDonald's, Elmwood Ave" autocomplete="off" required></label>
+        <datalist id="places"></datalist>
+        <div class="two">
+          <label>City<input type="text" id="city" placeholder="Buffalo, NY"></label>
+          <label>Format<select id="format"><option>Fountain</option><option>Can</option><option>Plastic bottle</option><option>Glass bottle</option></select></label>
+        </div>
+        <div class="two">
+          <label>Ice type<select id="iceType"><option>Nugget / pellet</option><option>Crushed</option><option selected>Cubed</option><option>Crescent</option><option>Shaved</option><option>No ice</option></select></label>
+          <label>Date<input type="date" id="date"></label>
+        </div>
+
+        <div class="crit"><div class="top"><span>Fizz</span><em>30%</em><output id="o_fizz">7</output></div><span class="hint">Sharp, prickly carbonation vs. flat by the third sip</span><input type="range" id="fizz" min="1" max="10" value="7" aria-label="Fizz"></div>
+        <div class="crit"><div class="top"><span>Syrup ratio</span><em>30%</em><output id="o_syrup">7</output></div><span class="hint">Dialed-in balance vs. watery or syrupy</span><input type="range" id="syrup" min="1" max="10" value="7" aria-label="Syrup ratio"></div>
+        <div class="crit"><div class="top"><span>Chill</span><em>25%</em><output id="o_chill">7</output></div><span class="hint">Ice-cold from the first sip</span><input type="range" id="chill" min="1" max="10" value="7" aria-label="Chill"></div>
+        <div class="crit"><div class="top"><span>Ice</span><em>15%</em><output id="o_ice">7</output></div><span class="hint">Right amount, right shape (pellet ice scores high)</span><input type="range" id="ice" min="1" max="10" value="7" aria-label="Ice"></div>
+
+        <div class="total"><div><div class="eyebrow">Crispiness</div><div class="tier" id="tier"></div></div><div class="big" id="ov">7.0</div></div>
+        <label>Notes<textarea id="notes" placeholder="Machine just serviced? Lemon offered? Styrofoam cup?"></textarea></label>
+        <p class="err" id="ferr" hidden></p>
+        <button class="btn" type="submit" id="submit">Log pour</button>
+      </form>
+    </section>
+  </div>
+<footer class="legal">Fridge Cig Report is an independent fan project. Not affiliated with or endorsed by The Coca-Cola Company. Diet Coke is a trademark of The Coca-Cola Company.</footer>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const W={fizz:.30,syrup:.30,chill:.25,ice:.15};
+const KEYS=Object.keys(W);
+const LS='dcpr.v1';
+let rows=[], mode='loading', db=null, user=null, me=null, isOwner=false, canWrite=true;
+let names={}, nameIds='', open=new Set(), confirmDel=null;
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const overall=r=>KEYS.reduce((s,k)=>s+(Number(r[k])||0)*W[k],0);
+const tier=v=>v>=9?'Elite pour':v>=7.5?'Solid':v>=6?'Passable':v>=4?'Flat-adjacent':'Avoid';
+const keyOf=r=>(r.place||'').trim().toLowerCase()+'|'+(r.city||'').trim().toLowerCase();
+
+function toast(msg){const t=$('toast');t.textContent=msg;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,2200)}
+
+function loadLocal(){try{rows=JSON.parse(localStorage.getItem(LS)||'[]')}catch(e){rows=[]}}
+function saveLocal(){try{localStorage.setItem(LS,JSON.stringify(rows))}catch(e){}}
+
+function render(){
+  const groups=new Map();
+  for(const r of rows){const k=keyOf(r);if(!groups.has(k))groups.set(k,{key:k,place:r.place,city:r.city,pours:[]});groups.get(k).pours.push(r)}
+  const list=[...groups.values()].map(g=>{
+    const scores=g.pours.map(overall);
+    const formats={};g.pours.forEach(p=>{formats[p.format]=(formats[p.format]||0)+1});
+    return {...g,avg:scores.reduce((a,b)=>a+b,0)/scores.length,formats:Object.keys(formats)};
+  }).sort((a,b)=>b.avg-a.avg||b.pours.length-a.pours.length);
+
+  $('count').textContent=rows.length?`${list.length} spot${list.length>1?'s':''} · ${rows.length} pour${rows.length>1?'s':''}`:'';
+  const dl=$('places');dl.innerHTML=list.map(g=>`<option value="${esc(g.place)}">`).join('');
+
+  const b=$('board');
+  if(mode==='loading'){b.innerHTML='<div class="empty"><b>Loading pours…</b><p>Pulling the latest scores.</p></div>';return}
+  if(!list.length){b.innerHTML=`<div class="empty"><b>No pours yet</b><p>Ranked spots show up here once someone logs a Diet Coke. Rate your next one with the form${innerWidth<=820?' below':''}: fizz, syrup ratio, chill and ice, scored 1 to 10.</p></div>`;return}
+
+  b.innerHTML=list.map((g,i)=>{
+    const isOpen=open.has(g.key);
+    const pours=isOpen?`<div class="pours">${g.pours.slice().sort((a,c)=>(c.createdAt||0)-(a.createdAt||0)).map(p=>{
+      const mine=mode==='local'||(me&&p.rater===me)||isOwner;
+      const who=mode==='local'?'You':(names[p.rater]||'Someone');
+      const del=mine&&canWrite?(confirmDel===p.id?`<button class="linkbtn" data-del="${esc(p.id)}">Confirm delete</button><button class="linkbtn" data-cancel="1">Cancel</button>`:`<button class="linkbtn" data-ask="${esc(p.id)}">Delete</button>`):'';
+      return `<div class="pour"><div><b>${overall(p).toFixed(1)}</b> · ${esc(p.format)}${p.iceType?' · '+esc(p.iceType==='No ice'?'No ice':p.iceType+' ice'):''} · ${esc(who)}${p.date?' · '+esc(p.date):''}<div class="sub4">fizz ${p.fizz} · syrup ${p.syrup} · chill ${p.chill} · ice ${p.ice}</div></div><div class="act">${del}</div>${p.notes?`<p>${esc(p.notes)}</p>`:''}</div>`}).join('')}</div>`:'';
+    return `<div class="row${i===0?' top':''}" role="button" tabindex="0" aria-expanded="${isOpen}" data-key="${esc(g.key)}">
+      <div class="rank">${i+1}</div>
+      <div style="min-width:0"><div class="pname">${esc(g.place)}</div>
+        <div class="meta">${g.city?`<span>${esc(g.city)}</span>`:''}<span>${g.pours.length} pour${g.pours.length>1?'s':''}</span>${g.formats.map(f=>`<span class="chip">${esc(f)}</span>`).join('')}</div>
+        <div class="bar"><i style="width:${(g.avg*10).toFixed(1)}%"></i></div></div>
+      <div class="score">${g.avg.toFixed(1)}<small>${tier(g.avg)}</small></div>${pours}</div>`;
+  }).join('');
+  resolveNames();
+}
+
+async function resolveNames(){
+  if(!user||mode!=='db')return;
+  const ids=[...new Set(rows.map(r=>r.rater).filter(Boolean))];
+  const sig=ids.sort().join(',');if(sig===nameIds)return;nameIds=sig;
+  try{const ps=await user.profiles(ids);for(const id of ids)names[id]=ps?.[id]?.name||'';render()}catch(e){}
+}
+
+$('board').addEventListener('click',async e=>{
+  const t=e.target;
+  if(t.dataset.ask){confirmDel=t.dataset.ask;render();return}
+  if(t.dataset.cancel){confirmDel=null;render();return}
+  if(t.dataset.del){const id=t.dataset.del;confirmDel=null;
+    if(mode==='db'){try{await db.collection('ratings').doc(id).delete();toast('Pour deleted')}catch(err){toast('Could not delete that pour. Try again.')}}
+    else{rows=rows.filter(r=>r.id!==id);saveLocal();render();toast('Pour deleted')}
+    return}
+  if(t.closest('.pours'))return;
+  const row=t.closest('.row');if(!row)return;
+  const k=row.dataset.key;open.has(k)?open.delete(k):open.add(k);render();
+});
+$('board').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.classList.contains('row')){e.preventDefault();e.target.click()}});
+
+function updateTotal(){const v={};KEYS.forEach(k=>{v[k]=+$(k).value;$('o_'+k).textContent=v[k]});const o=overall(v);$('ov').textContent=o.toFixed(1);$('tier').textContent=tier(o)}
+KEYS.forEach(k=>$(k).addEventListener('input',updateTotal));
+$('date').value=new Date().toLocaleDateString('en-CA');
+updateTotal();
+$('jump').addEventListener('click',()=>{$('fh').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});$('place').focus({preventScroll:true})});
+
+$('f').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const err=$('ferr');err.hidden=true;
+  const place=$('place').value.trim();
+  if(!place){err.textContent='Add the establishment name so the pour has somewhere to rank.';err.hidden=false;$('place').focus();return}
+  if(!canWrite){err.textContent='You can view this leaderboard but not add to it. Ask the owner for Contributor access.';err.hidden=false;return}
+  const r={place,city:$('city').value.trim(),format:$('format').value,iceType:$('iceType').value,date:$('date').value,notes:$('notes').value.trim().slice(0,500),createdAt:Date.now()};
+  KEYS.forEach(k=>r[k]=+$(k).value);
+  const btn=$('submit');btn.disabled=true;
+  try{
+    if(mode==='db'){if(me)r.rater=me;await db.collection('ratings').add(r)}
+    else{r.id='p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);rows.push(r);saveLocal();render()}
+    open.add(keyOf(r));
+    $('notes').value='';KEYS.forEach(k=>$(k).value=7);updateTotal();
+    toast(`Logged ${overall(r).toFixed(1)} crispiness at ${place}`);
+  }catch(ex){
+    if(ex&&ex.code==='invalid_argument'){canWrite=false;err.textContent='You can view this leaderboard but not add to it. Ask the owner for Contributor access.'}
+    else if(ex&&ex.code==='quota_exceeded'){err.textContent='The leaderboard is full. Delete some old pours to make room.'}
+    else{err.textContent='That pour did not save. Check your connection and try again.'}
+    err.hidden=false;
+  }finally{btn.disabled=false}
+});
+
+function goLocal(){
+  mode='local';loadLocal();
+  const n=$('modeNote');n.textContent='Pours are saved in this browser only. Open the published page while signed in to share a leaderboard.';n.hidden=false;render();
+}
+
+render();
+(async()=>{
+  if(!window.claude||!window.claude.use){goLocal();return}
+  try{db=await window.claude.use('db')}catch(e){db=null}
+  if(!db){goLocal();return}
+  try{user=await window.claude.use('user')}catch(e){user=null}
+  if(user){
+    try{me=await user.id()}catch(e){}
+    try{isOwner=!!(await user.isOwner())}catch(e){}
+    try{const c=await user.can('data.write');if(c===false){canWrite=false;$('submit').disabled=true;$('ferr').textContent='You can view this leaderboard but not add to it. Ask the owner for Contributor access.';$('ferr').hidden=false}}catch(e){}
+  }
+  mode='db';
+  db.collection('ratings').orderBy('createdAt','desc').limit(1000).onSnapshot(snap=>{
+    rows=snap.docs.map(d=>({id:d.id,...d.data()}));render();
+  },()=>{const n=$('modeNote');n.textContent='Live updates stopped. Reload the page to reconnect.';n.hidden=false});
+  render();
+})();
+</script>
